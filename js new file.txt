@@ -1,0 +1,84 @@
+var buttonColorArray = ["red","green","blue","yellow"];
+var level = 0;
+var buttonPressed = [];
+var randomSequence = [];
+
+$("html").on("keydown",function(e){
+  if(level === 0){
+      startGame(e);
+  } else
+return;
+});
+
+
+
+  $("button").on("click",function(){
+
+  buttonPressed.push(this.id);
+  pressedB();
+  nextSequence();  //[red,blue]
+
+});
+
+
+
+//[red,blue,green]
+
+//[red]
+//[red,blue]
+//[red,blue,green]
+//[red,red,blue,red,blue,green]
+
+//function to accept clicks and check it with random sequences.
+function pressedB (){
+  for(var i =0; i< randomSequence.length ; i++ ){
+    if(buttonPressed[i] === randomSequence[i]){
+      continue;
+      }
+    else gameEnd();
+  }
+
+}
+
+//function to start the game with the use of only enter.
+function startGame(e){
+    if(e.which === 13){
+    var randomNumberGenerator = Math.floor(Math.random()*4);
+    var audio = new Audio("sounds/"+buttonColorArray[randomNumberGenerator]+ ".mp3");
+    audio.play();
+    $("#"+buttonColorArray[randomNumberGenerator]).addClass("pressed");
+    setTimeout(function(){
+    $("#"+buttonColorArray[randomNumberGenerator]).removeClass("pressed");
+    },100);
+    level = level + 1;
+    $("h1").text("Level "+level);
+    randomSequence.push(buttonColorArray[randomNumberGenerator]);
+  } else return false;
+
+}
+
+//function which will produce another pop up of  a button randomly
+function nextSequence(){
+
+      var randomNumberGenerator = Math.floor(Math.random()*4);
+      var audio = new Audio("sounds/"+buttonColorArray[randomNumberGenerator]+ ".mp3");
+      audio.play();
+      $("#"+buttonColorArray[randomNumberGenerator]).addClass("pressed");
+      setTimeout(function(){
+      $("#"+buttonColorArray[randomNumberGenerator]).removeClass("pressed");
+      },100);
+      level = level + 1;
+      $("h1").text("Level "+level);
+      randomSequence.push(buttonColorArray[randomNumberGenerator]);
+    }
+
+
+// function which will lead to end of game
+function gameEnd(){
+
+      var audio = new Audio("sounds/wrong.mp3");
+      audio.play();
+      $("body").addClass("game-over");
+      $("h1").text("Game Over. Press any key to restart");
+
+}
